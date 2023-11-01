@@ -22,6 +22,10 @@ public class HomeController : Controller {
         new Estudiante { Nombre = "Arnold", Apellidos = "Soria", FechaNacimiento = new DateTime(1998, 5, 15), Genero = "Masculino", TieneTarjetaCredito = "Si" , ColoresFavoritos = new List<string> { "Celeste", "Azul" } }, 
         new Estudiante { Nombre = "Vivi", Apellidos = "Ortiz", FechaNacimiento = new DateTime(2000, 2, 10), Genero = "Femenino", TieneTarjetaCredito = "No" , ColoresFavoritos = new List<string> { "Rojo", "Celeste", "Azul" } }
     };
+
+
+    /* ESTA ES LA VISTA PRINCIPAL DONDE NI BIEN SE CARGA LA PAGINA ME REDIRIGE A ESTA,
+    EN ESTA VISTA SE PUEDE APRECIAR EL FORMULARIO DE REGISTRO Y MAS ABAJO LA LISTA DE LOS REGISTRADOS */
     public IActionResult Index() {
         ViewBag.Generos = new List<string> { "Masculino", "Femenino", "Otro" };
         List<string> colores = new List<string> {
@@ -37,6 +41,8 @@ public class HomeController : Controller {
         return View(estudiantes);
     }
 
+
+    /* METODO POST PARA REGISTRAR A UN ESTUDIANTE */
     [HttpPost]
     public IActionResult RegistrarEstudiante(Estudiante estudiante) {
         // Obtiene los colores seleccionados del formulario
@@ -49,6 +55,8 @@ public class HomeController : Controller {
         estudiantes.Add(estudiante);
         return RedirectToAction("Index");
     }
+
+    /* METODO PARA MOSTRAR LA VISTA DE UNA LLSTA DE ESTUDIANTES REGISTRADOS */
 
     public IActionResult EstudiantesLista() {
         return View(estudiantes);

@@ -1,0 +1,191 @@
+﻿@model List<registrar_listar_estudiante.Models.Estudiante>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Registro de Estudiantes</h2>
+
+                    <form asp-controller="Home" asp-action="RegistrarEstudiante" method="post">
+                        <div class="form-group">
+                            <label for="Nombre">Nombre:</label>
+                            <input type="text" class="form-control" id="Nombre" name="Nombre" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Apellidos">Apellidos:</label>
+                            <input type="text" class="form-control" id="Apellidos" name="Apellidos" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="FechaNacimiento">Fecha de Nacimiento:</label>
+                            <input type="date" class="form-control" id="FechaNacimiento" name="FechaNacimiento" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Genero">Género:</label>
+                            <select class="form-control" id="Genero" name="Genero" required>
+                                <option value="">Selecciona un género...</option>
+                                @foreach (var genero in ViewBag.Generos) {
+                                    <option value="@genero">@genero</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TieneTarjetaCredito">¿Tiene tarjeta de crédito?</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="TieneTarjetaCredito" id="TieneTarjetaCreditoSi" value="Si" required>
+                                <label class="form-check-label" for="TieneTarjetaCreditoSi">Sí</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="TieneTarjetaCredito" id="TieneTarjetaCreditoNo" value="No" required>
+                                <label class="form-check-label" for="TieneTarjetaCreditoNo">No</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ColoresFavoritos">Colores Favoritos:</label>
+                            <div>
+                                @foreach (var color in ViewBag.Colores) {
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="@("color-" + color)" name="ColoresFavoritos" value="@color">
+                                        <label class="form-check-label" for="@("color-" + color)">@color</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h2 class="text-center mb-4">Lista de Estudiantes Registrados</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>Género</th>
+                            <th>Tarjeta de Credito</th>
+                            <th>Colores favoritos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var estudiante in Model) {
+                            <tr class="table-row">
+                                <td>@estudiante.Nombre</td>
+                                <td>@estudiante.Apellidos</td>
+                                <td>@estudiante.FechaNacimiento.ToShortDateString()</td>
+                                <td>@estudiante.Genero</td>
+                                <td>@estudiante.TieneTarjetaCredito</td>
+                                <!-- <td>@string.Join(", ", estudiante.ColoresFavoritos)</td> --> 
+                                <td>
+                                    @if (estudiante.ColoresFavoritos != null) {
+                                        @foreach (var color in estudiante.ColoresFavoritos) {
+                                            <span>@color</span><br />
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f4f4f4;
+        font-family: Arial, sans-serif;
+    }
+
+    /* CON ESTO EL FOOTER SE VE MAS ANCHO Y FEO 
+    .container {
+        margin-top: 50px;
+    }*/
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(128, 189, 255, 0.25);
+    }
+
+    .form-check-input {
+        margin-right: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    /*ESTO ES PARA LA PARTE DE LISTAR LOS ESTUDIANTES*/
+    table {
+        background-color: white;
+        text-align: left;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px; /* Aumenta el espaciado para mejorar la legibilidad */
+        border: 1px solid #ddd; /* Agrega un borde en todas las celdas */
+    }
+
+    thead {
+        background-color: #000000; /*#246355*/
+        border-bottom: solid 5px #0F3620;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #ddd;
+    }
+
+    tr:hover {
+        background-color: #369681;
+        color: white;
+    }
+</style>
